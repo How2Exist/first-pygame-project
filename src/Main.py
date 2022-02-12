@@ -7,39 +7,66 @@ pygame.display.set_caption("!¡||⊣ᔑᒲᒷ.ℸ ̣ ᒷᓭℸ ̣.ʖꖎ𝙹ᓵ�
 icon = pygame.image.load("resources/MEGASHIP_FIELD (1).jpg")
 pygame.display.set_icon(icon)
 
-image = pygame.image.load("resources/Black_Square.png")
-imageX = 400
-imageY = 500
-Image = pygame.transform.scale(image, (60, 60))
+# rect attrs: [x, y, w, h] as list
 
-def show_image():
-    screen.blit(Image, (imageX, imageY))
+RECTATTRX = 0
+RECTATTRY = 1
+RECTATTRW = 2
+RECTATTRH = 3
+
+wall_rect = [600, 300, 40, 40]
+
+player_rect = [400, 500, 30, 30]
+move_speed = 0.1
+
+image = pygame.image.load("resources/Black_Square.png")
+player_image = pygame.transform.scale(image, (player_rect[RECTATTRW], player_rect[RECTATTRH]))
+wall_image = pygame.transform.scale(image, (wall_rect[RECTATTRW], wall_rect[RECTATTRH]))
+
+def is_colliding(rect1, rect2):
+    if rect1[RECTATTRX] + rect1[RECTATTRW] >= rect2[RECTATTRX] and rect1[RECTATTRX] <= rect2[RECTATTRX] + rect2[RECTATTRW]:
+        if rect1[RECTATTRY] + rect1[RECTATTRH] >= rect2[RECTATTRY] and rect1[RECTATTRY] <= rect2[RECTATTRY] + rect2[RECTATTRH]:
+            return True
+
+    return False
+
+def draw_rect(rect, image):
+    screen.blit(image, (rect[RECTATTRX], rect[RECTATTRY]))
 
 game_running = True
 
 def update_player():
     global game_running
-    global imageX
-    global imageY
+    global player_rect
 
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
+
     if keys [pygame.K_w]:
-        imageY -= 0.1
+        player_rect[RECTATTRY] -= move_speed
+
     if keys [pygame.K_s]:
-        imageY += 0.1
+        player_rect[RECTATTRY] += move_speed
+
     if keys [pygame.K_a]:
-        imageX -= 0.1
+        player_rect[RECTATTRX] -= move_speed
+
     if keys [pygame.K_d]:
-        imageX += 0.1
+        player_rect[RECTATTRX] += move_speed
 
 while game_running:
     update_player()
 
+    if (is_colliding(player_rect, wall_rect)):
+        print("collision")
+
     screen.fill((255, 255, 255))
-    show_image()
+
+    draw_rect(player_rect, player_image)
+    draw_rect(wall_rect, wall_image)
+
     pygame.display.update()
 
 

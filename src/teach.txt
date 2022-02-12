@@ -1,0 +1,27 @@
+aabb:
+
+a_x = 5
+a_y = 4
+
+b_x = 9
+b_y = 8
+
+for point:
+
+cx >= x and cx <= x + w
+cy >= y and cy <= y + h
+
+rect attrs:
+    x, y, w, h
+
+a---*
+|   |
+|  c|
+*---b
+
+for rect:
+
+r1, r2 exist
+
+x1 + w1 >= x2 and x1 <= x2 + w2
+y1 + y1 >= y2 and y1 <= y2 + h2
